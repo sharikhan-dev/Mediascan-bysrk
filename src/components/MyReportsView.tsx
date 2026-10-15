@@ -8,12 +8,13 @@ import {
   Calendar,
   Building2,
   Activity,
+  Download,
 } from 'lucide-react';
 import { Report } from '../types';
 
 interface MyReportsViewProps {
   reports: Report[];
-  onViewReport: (reportId: string) => void;
+  onViewReport: (reportId: string, openExport?: boolean) => void;
   onUploadClick: () => void;
   onDeleteReport: (reportId: string) => void;
 }
@@ -74,12 +75,13 @@ export const MyReportsView: React.FC<MyReportsViewProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="FILTER SPECIMEN BY NAME, LAB OR DATE..."
+            aria-label="Filter medical reports by name, laboratory, or date"
             className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 text-xs font-mono uppercase focus:bg-white focus:outline-none focus:border-slate-900"
           />
         </div>
 
         {/* Filter Segmented Control */}
-        <div className="flex items-center gap-1 p-1 bg-slate-100 self-stretch sm:self-auto text-[11px]">
+        <div className="flex items-center gap-1 p-1 bg-slate-100 self-stretch sm:self-auto text-[11px]" role="group" aria-label="Report filter selection">
           <button
             onClick={() => setFilterType('all')}
             className={`px-3 py-1 font-bold transition-colors uppercase ${
@@ -132,6 +134,14 @@ export const MyReportsView: React.FC<MyReportsViewProps> = ({
               <div
                 onClick={() => onViewReport(report.id)}
                 className="space-y-1.5 cursor-pointer flex-1 min-w-0"
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    onViewReport(report.id);
+                  }
+                }}
+                aria-label={`View clinical details for ${report.original_filename}`}
               >
                 <div className="flex items-center gap-2">
                   <h3 className="text-sm font-bold text-[#0A0F1D] group-hover:text-blue-600 transition-colors font-sans truncate">
@@ -161,9 +171,21 @@ export const MyReportsView: React.FC<MyReportsViewProps> = ({
               </div>
 
               <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto font-mono text-xs">
+                {/* Direct PDF Export Action */}
+                <button
+                  onClick={() => onViewReport(report.id, true)}
+                  className="px-3 py-1.5 font-bold text-slate-700 bg-white hover:bg-slate-100 border border-slate-300 transition-colors flex items-center gap-1 uppercase"
+                  title="Export this report to PDF"
+                  aria-label={`Export PDF for ${report.original_filename}`}
+                >
+                  <Download className="w-3.5 h-3.5 text-blue-600" />
+                  <span>PDF</span>
+                </button>
+
                 <button
                   onClick={() => onViewReport(report.id)}
                   className="px-3 py-1.5 font-bold text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-300 transition-colors flex items-center gap-1 uppercase"
+                  aria-label={`Inspect report ${report.original_filename}`}
                 >
                   <span>Inspect</span>
                   <ChevronRight className="w-3.5 h-3.5" />
@@ -173,6 +195,7 @@ export const MyReportsView: React.FC<MyReportsViewProps> = ({
                   onClick={() => onDeleteReport(report.id)}
                   className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 border border-transparent hover:border-red-200 transition-colors"
                   title="Delete record"
+                  aria-label={`Delete report ${report.original_filename}`}
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>

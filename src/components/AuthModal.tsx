@@ -145,7 +145,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0A0F1D]/60 backdrop-blur-xs animate-fade-in font-sans">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0A0F1D]/60 backdrop-blur-xs animate-fade-in font-sans" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
       <div className="relative w-full max-w-md bg-white border-2 border-slate-900 shadow-[8px_8px_0px_0px_#0A0F1D] overflow-hidden">
         {/* Header */}
         <div className="p-6 border-b border-slate-200 flex items-center justify-between">
@@ -153,7 +153,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block">
               Authorization Gateway
             </span>
-            <h2 className="text-xl font-bold text-slate-900 font-editorial mt-0.5">
+            <h2 id="auth-modal-title" className="text-xl font-bold text-slate-900 font-editorial mt-0.5">
               {mode === 'signin' && 'Sign in to Workspace'}
               {mode === 'signup' && 'Create Operator Account'}
               {mode === 'forgot' && 'Reset Password'}
@@ -162,7 +162,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
           <button
             onClick={onClose}
             className="p-1.5 text-slate-400 hover:text-slate-900 border border-slate-200"
-            aria-label="Close modal"
+            aria-label="Close modal dialog"
           >
             <X className="w-4 h-4" />
           </button>
@@ -171,14 +171,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
         {/* Content */}
         <div className="p-6 space-y-4 font-mono text-xs">
           {error && (
-            <div className="p-3 bg-red-50 border-l-4 border-red-600 text-red-800 flex items-start gap-2">
+            <div className="p-3 bg-red-50 border-l-4 border-red-600 text-red-800 flex items-start gap-2" role="alert">
               <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
 
           {successMessage && (
-            <div className="p-3 bg-emerald-50 border-l-4 border-emerald-600 text-emerald-800 flex items-start gap-2">
+            <div className="p-3 bg-emerald-50 border-l-4 border-emerald-600 text-emerald-800 flex items-start gap-2" role="status">
               <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
               <span>{successMessage}</span>
             </div>
@@ -187,10 +187,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
           <form onSubmit={handleSubmit} className="space-y-4">
             {mode === 'signup' && (
               <div>
-                <label className="block text-slate-600 uppercase mb-1">Full Name</label>
+                <label htmlFor="auth-name-input" className="block text-slate-600 uppercase mb-1">Full Name</label>
                 <div className="relative">
-                  <User className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <User className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" aria-hidden="true" />
                   <input
+                    id="auth-name-input"
                     type="text"
                     required
                     value={displayName}
@@ -203,10 +204,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             )}
 
             <div>
-              <label className="block text-slate-600 uppercase mb-1">Email Address</label>
+              <label htmlFor="auth-email-input" className="block text-slate-600 uppercase mb-1">Email Address</label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" aria-hidden="true" />
                 <input
+                  id="auth-email-input"
                   type="email"
                   required
                   value={email}
@@ -220,7 +222,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             {mode !== 'forgot' && (
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="block text-slate-600 uppercase">Password</label>
+                  <label htmlFor="auth-password-input" className="block text-slate-600 uppercase">Password</label>
                   {mode === 'signin' && (
                     <button
                       type="button"
@@ -232,8 +234,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
                   )}
                 </div>
                 <div className="relative">
-                  <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" aria-hidden="true" />
                   <input
+                    id="auth-password-input"
                     type="password"
                     required
                     value={password}

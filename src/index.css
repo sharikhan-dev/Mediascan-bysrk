@@ -55,18 +55,125 @@
   background: #94a3b8;
 }
 
-/* Print friendly report export */
+/* Print / PDF Export Stylesheet Configuration */
 @media print {
-  body {
-    background: white !important;
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm 12mm 12mm;
   }
-  nav, sidebar, button, .no-print {
+
+  /* Reset layout primitives for flawless multi-page PDF generation */
+  html, body {
+    background: #ffffff !important;
+    color: #0a0f1d !important;
+    font-size: 10pt !important;
+    line-height: 1.4 !important;
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Reset all flex/overflow wrappers and fixed sidebar offsets */
+  #root,
+  body > div,
+  div,
+  main {
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    transform: none !important;
+    position: static !important;
+  }
+
+  /* Strip desktop sidebar padding-left so report spans full A4 width */
+  .lg\:pl-64,
+  [class*="lg:pl-64"] {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Hide app navigation, sidebar, workspace header, interactive buttons, modals */
+  nav,
+  aside,
+  header,
+  button,
+  .no-print,
+  [role="dialog"] {
     display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    opacity: 0 !important;
   }
+
+  /* Print document container */
   .print-area {
+    width: 100% !important;
+    max-width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
     border: none !important;
     box-shadow: none !important;
+    background: transparent !important;
+    position: static !important;
+  }
+
+  /* Ensure card borders print crisp without heavy drop shadows */
+  .border,
+  .border-2 {
+    border-color: #cbd5e1 !important;
+    box-shadow: none !important;
+  }
+
+  /* Clean table behavior across page breaks */
+  thead {
+    display: table-header-group !important;
+  }
+
+  tr,
+  .print-avoid-break {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Force color retention for badges, gauges, and status highlights */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Reveal print-only elements */
+  .print-only {
+    display: block !important;
+  }
+
+  .print-only-flex {
+    display: flex !important;
+  }
+
+  /* Expand test details when exported */
+  .print-expanded-row {
+    display: table-row !important;
+  }
+
+  /* Hide sections if user opted for concise export */
+  .hide-on-concise {
+    display: none !important;
   }
 }
+
+

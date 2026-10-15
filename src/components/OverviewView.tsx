@@ -185,7 +185,15 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                   <div
                     key={report.id}
                     onClick={() => onViewReport(report.id)}
-                    className="py-3.5 hover:bg-slate-50 transition-colors cursor-pointer flex items-center justify-between group"
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        onViewReport(report.id);
+                      }
+                    }}
+                    aria-label={`View clinical details for ${report.original_filename}`}
+                    className="py-3.5 hover:bg-slate-50 transition-colors cursor-pointer flex items-center justify-between group focus:outline-none focus:bg-slate-50"
                   >
                     <div className="space-y-1 min-w-0 pr-4">
                       <div className="flex items-center gap-2">

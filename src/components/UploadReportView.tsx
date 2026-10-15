@@ -353,12 +353,21 @@ export const UploadReportView: React.FC<UploadReportViewProps> = ({
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}
             onClick={() => fileInputRef.current?.click()}
-            className="p-12 border-2 border-dashed border-slate-300 hover:border-slate-900 bg-white transition-all text-center cursor-pointer group"
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                fileInputRef.current?.click();
+              }
+            }}
+            aria-label="Upload laboratory report file. Press enter or space to browse files."
+            className="p-12 border-2 border-dashed border-slate-300 hover:border-slate-900 bg-white transition-all text-center cursor-pointer group focus:outline-none focus:border-slate-900"
           >
             <input
               ref={fileInputRef}
               type="file"
               accept=".pdf,image/png,image/jpeg,image/jpg"
+              aria-label="Upload laboratory document file (PDF, PNG, JPG up to 20MB)"
               className="hidden"
               onChange={(e) => {
                 if (e.target.files && e.target.files[0]) {

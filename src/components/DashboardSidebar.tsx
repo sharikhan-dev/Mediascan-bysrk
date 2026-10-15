@@ -78,13 +78,14 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
             <button
               onClick={onCloseMobile}
               className="lg:hidden p-1 text-slate-400 hover:text-slate-900 rounded"
+              aria-label="Close navigation sidebar"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
           {/* Navigation Items */}
-          <nav className="space-y-1 text-xs">
+          <nav className="space-y-1 text-xs" aria-label="Workspace navigation">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = currentTab === item.id;
@@ -96,6 +97,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                     onSelectTab(item.id);
                     onCloseMobile();
                   }}
+                  aria-current={isActive ? 'page' : undefined}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-none text-left transition-colors font-medium ${
                     isActive
                       ? 'bg-[#0A0F1D] text-white font-semibold shadow-xs'

@@ -31,6 +31,7 @@ export default function App() {
 
   const [dashboardTab, setDashboardTab] = useState<DashboardTab>('overview');
   const [selectedReportId, setSelectedReportId] = useState<string | null>(null);
+  const [autoExportPdf, setAutoExportPdf] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -50,12 +51,19 @@ export default function App() {
     setCurrentView('landing');
     setDashboardTab('overview');
     setSelectedReportId(null);
+    setAutoExportPdf(false);
+  };
+
+  const handleViewReport = (id: string, openExport = false) => {
+    setSelectedReportId(id);
+    setAutoExportPdf(openExport);
   };
 
   const handleSaveReport = (newReport: Report) => {
     const updated = addLocalReport(newReport);
     setReports(updated);
     setSelectedReportId(newReport.id);
+    setAutoExportPdf(false);
   };
 
   const handleDeleteReport = (reportId: string) => {
@@ -203,9 +211,13 @@ export default function App() {
               {activeReport ? (
                 <ReportDetailView
                   report={activeReport}
-                  onBack={() => setSelectedReportId(null)}
+                  onBack={() => {
+                    setSelectedReportId(null);
+                    setAutoExportPdf(false);
+                  }}
                   onDeleteReport={handleDeleteReport}
                   onAskAI={handleAskAIAboutReport}
+                  autoOpenExport={autoExportPdf}
                 />
               ) : (
                 <>
@@ -214,7 +226,7 @@ export default function App() {
                       user={user}
                       reports={reports}
                       onUploadClick={() => setDashboardTab('upload')}
-                      onViewReport={(id) => setSelectedReportId(id)}
+                      onViewReport={(id) => handleViewReport(id, false)}
                       onViewTrends={() => setDashboardTab('trends')}
                       onLoadDemoData={handleLoadDemoData}
                     />
@@ -223,7 +235,7 @@ export default function App() {
                   {dashboardTab === 'reports' && (
                     <MyReportsView
                       reports={reports}
-                      onViewReport={(id) => setSelectedReportId(id)}
+                      onViewReport={handleViewReport}
                       onUploadClick={() => setDashboardTab('upload')}
                       onDeleteReport={handleDeleteReport}
                     />

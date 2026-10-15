@@ -393,6 +393,48 @@ export const DEMO_REPORTS: Report[] = [
       {
         id: 'res-lip-2',
         report_id: 'demo-report-lipid-2026',
+        test_name: 'HDL Cholesterol (Good)',
+        measured_value: 48,
+        unit: 'mg/dL',
+        reference_range_low: 40,
+        reference_range_high: 60,
+        laboratory_reference_text: '> 40 mg/dL',
+        comparison_status: 'normal',
+        extraction_review_status: 'verified',
+        confidence: 'high',
+        abnormal_flag: null,
+      },
+      {
+        id: 'res-lip-3',
+        report_id: 'demo-report-lipid-2026',
+        test_name: 'LDL Cholesterol (Calculated)',
+        measured_value: 134,
+        unit: 'mg/dL',
+        reference_range_low: 0,
+        reference_range_high: 99,
+        laboratory_reference_text: '< 100 mg/dL (Optimal)',
+        comparison_status: 'high',
+        extraction_review_status: 'verified',
+        confidence: 'high',
+        abnormal_flag: 'H',
+      },
+      {
+        id: 'res-lip-4',
+        report_id: 'demo-report-lipid-2026',
+        test_name: 'Triglycerides',
+        measured_value: 165,
+        unit: 'mg/dL',
+        reference_range_low: 0,
+        reference_range_high: 149,
+        laboratory_reference_text: '< 150 mg/dL (Normal)',
+        comparison_status: 'high',
+        extraction_review_status: 'verified',
+        confidence: 'high',
+        abnormal_flag: 'H',
+      },
+      {
+        id: 'res-lip-5',
+        report_id: 'demo-report-lipid-2026',
         test_name: 'Fasting Glucose',
         measured_value: 98,
         unit: 'mg/dL',
@@ -404,37 +446,68 @@ export const DEMO_REPORTS: Report[] = [
         confidence: 'high',
         abnormal_flag: null,
       },
-      {
-        id: 'res-lip-3',
-        report_id: 'demo-report-lipid-2026',
-        test_name: 'ALT (Alanine Aminotransferase)',
-        measured_value: 36,
-        unit: 'U/L',
-        reference_range_low: 9,
-        reference_range_high: 46,
-        laboratory_reference_text: '9 - 46 U/L',
-        comparison_status: 'normal',
-        extraction_review_status: 'verified',
-        confidence: 'high',
-        abnormal_flag: null,
-      },
     ],
     analysis: {
       id: 'analysis-lip-1',
       report_id: 'demo-report-lipid-2026',
       summary:
-        'Earlier lipid panel showing Total Cholesterol at 215 mg/dL. In this previous panel, Fasting Glucose (98 mg/dL) and ALT (36 U/L) were both comfortably within the normal reference bounds.',
+        'Comprehensive lipid cardiovascular panel showing Total Cholesterol at 215 mg/dL, LDL at 134 mg/dL, and Triglycerides at 165 mg/dL. Protective HDL cholesterol is healthy at 48 mg/dL and baseline fasting blood glucose was optimal at 98 mg/dL.',
       key_findings: [
         {
-          title: 'Borderline High Total Cholesterol (215 mg/dL)',
+          title: 'Borderline High Total & LDL Cholesterol',
           explanation:
-            'A total cholesterol value above 200 mg/dL is classified as borderline elevated. Evaluating HDL, LDL, and triglycerides alongside it gives a complete cardiovascular picture.',
+            'A total cholesterol value above 200 mg/dL and LDL above 100 mg/dL indicate mild dyslipidemia. Dietary adjustments (fiber, reducing saturated fats) and aerobic activity are standard initial considerations.',
+          urgency: 'discuss_with_doctor',
+        },
+        {
+          title: 'Mildly Elevated Triglycerides (165 mg/dL)',
+          explanation:
+            'Triglycerides are slightly above the 150 mg/dL cutoff. Fasting duration and carbohydrate intake can contribute to slight elevations.',
           urgency: 'discuss_with_doctor',
         },
       ],
-      explanations: [],
-      doctor_questions: ['What is my calculated 10-year cardiovascular risk profile based on this lipid panel?'],
-      medical_glossary: [],
+      explanations: [
+        {
+          test_name: 'Total Cholesterol',
+          plain_explanation:
+            'The aggregate measurement of all cholesterol types circulating in your bloodstream, used as a primary cardiovascular risk marker.',
+          clinical_significance:
+            'Measured at 215 mg/dL compared to the <200 mg/dL threshold, suggesting discussion on lifestyle modifications.',
+          reference_comparison: 'Borderline elevated (215 vs. <200 mg/dL)',
+          questions_for_doctor: ['What is my calculated 10-year ASCVD cardiovascular risk score?'],
+        },
+        {
+          test_name: 'Triglycerides',
+          plain_explanation:
+            'A type of lipid fat in blood converted from unused calories, stored in fat cells and released between meals.',
+          clinical_significance:
+            'Slightly above the desirable 150 mg/dL target at 165 mg/dL.',
+          reference_comparison: 'Mildly elevated (165 vs. <150 mg/dL)',
+          questions_for_doctor: ['Could fasting length or my previous evening meal have influenced this reading?'],
+        },
+      ],
+      doctor_questions: [
+        'What is my calculated 10-year cardiovascular risk profile based on this lipid panel?',
+        'Would dietary modifications focusing on soluble fiber and heart-healthy fats be sufficient before considering statins?',
+        'When should we schedule a follow-up lipid retest?',
+      ],
+      medical_glossary: [
+        {
+          term: 'Lipid Panel',
+          definition:
+            'A blood test measuring specific fats in blood including total cholesterol, HDL, LDL, and triglycerides to evaluate cardiovascular health.',
+        },
+        {
+          term: 'HDL (High-Density Lipoprotein)',
+          definition:
+            'Often called "good cholesterol", HDL absorbs cholesterol in the blood and carries it back to the liver for excretion.',
+        },
+        {
+          term: 'Triglycerides',
+          definition:
+            'The most common type of fat in the body, which stores excess energy from food in adipose tissue.',
+        },
+      ],
       model_version: 'gemini-3.8-flash',
       created_at: '2026-03-04T08:16:00Z',
     },

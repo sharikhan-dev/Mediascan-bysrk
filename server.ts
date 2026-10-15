@@ -12,7 +12,43 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = 3000;
 
+// Security Middleware: Headers & Protection
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  next();
+});
+
+// Simple sliding-window rate limiter for AI endpoints (protect API quota)
+const requestRateMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+const MAX_REQUESTS_PER_WINDOW = 40; // 40 requests/min per IP
+
+const rateLimiter = (req: Request, res: Response, next: () => void) => {
+  const ip = req.ip || req.socket.remoteAddress || 'unknown';
+  const now = Date.now();
+  const entry = requestRateMap.get(ip);
+
+  if (!entry || now > entry.resetTime) {
+    requestRateMap.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    return next();
+  }
+
+  if (entry.count >= MAX_REQUESTS_PER_WINDOW) {
+    return res.status(429).json({
+      error: 'Too many requests. Please wait a moment before submitting more clinical queries.',
+    });
+  }
+
+  entry.count++;
+  next();
+};
+
 app.use(express.json({ limit: '35mb' }));
+app.use('/api/gemini', rateLimiter);
 
 // Initialize Google Gen AI client with User-Agent
 const apiKey = process.env.GEMINI_API_KEY;

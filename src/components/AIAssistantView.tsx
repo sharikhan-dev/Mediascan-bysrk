@@ -169,6 +169,7 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
             <select
               value={selectedReportId}
               onChange={(e) => setSelectedReportId(e.target.value)}
+              aria-label="Select laboratory specimen context"
               className="px-2.5 py-1 bg-white border border-slate-300 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-900 max-w-[220px] truncate uppercase"
             >
               <option value="all">ALL SPECIMENS ({reports.length})</option>
@@ -259,6 +260,7 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
             value={inputPrompt}
             onChange={(e) => setInputPrompt(e.target.value)}
             placeholder="Type your inquiry regarding this laboratory report..."
+            aria-label="Ask a question regarding this laboratory report"
             className="w-full pl-4 pr-12 py-3 bg-white border-2 border-slate-900 focus:border-blue-600 rounded-none text-xs sm:text-sm font-sans focus:outline-none shadow-xs"
           />
           <button
